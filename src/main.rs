@@ -5,10 +5,9 @@ use alg::{Complex, Translation2};
 use kiss3d::light::Light;
 use kiss3d::window::Window;
 
-const WIDTH: u32 = 100;
-const HEIGHT: u32 = 100;
+const RESOLUTION: u32 = 100;
 const MAX_ITERATIONS: u32 = 20;
-const EXPLOSION_THRESHOLD: f64 = 4.0;
+const EXPLOSION_THRESHOLD: u32 = 4;
 
 fn mandelbrot(real: f32, imag: f32, max_iter: u32) -> u32 {
     let c = Complex { re: real, im: imag };
@@ -29,27 +28,25 @@ fn mandelbrot(real: f32, imag: f32, max_iter: u32) -> u32 {
 fn main() {
     let mut window = Window::new("Mandelbrot");
 
-    let coordinates: [[[f32; 2]; WIDTH as usize]; HEIGHT as usize];
-    /* Something like this:
-     * [[[],[],[]],
-     *  [[],[],[]],
-     *  [[],[],[]]]
-     */
+    let mut pixel_y: u32 = 0;
+    while pixel_y < RESOLUTION {
+        let mut pixel_x: u32 = 0;
+        while pixel_x < RESOLUTION {
+            let real_x: f32 = 0.5 * (pixel_x as f32) + 2.0;
+            let imag_y: f32 = -0.5 * (pixel_y as f32) - 2.0;
+            let color_multiplier =
+                (mandelbrot(real_x, imag_y, MAX_ITERATIONS) / MAX_ITERATIONS) as f32;
 
-    let mut 
+            let pixel_width = (RESOLUTION / EXPLOSION_THRESHOLD) as f32;
+            let mut pixel = window.add_rectangle(pixel_width, pixel_width);
+            pixel.set_color(color_multiplier, color_multiplier, color_multiplier);
+            pixel.append_translation(&Translation2::new(real_x, imag_y));
 
-    let mut y: f32 = 0.0;
-    while y <= (HEIGHT as f32) {
-        let mut x: f32 = 0.0;
-        while x <= (WIDTH as f32) {
-            let mut square = window.add_rectangle(1.0, 1.0);
-            let color_multiplier = (mandelbrot(x, y, MAX_ITERATIONS)) as f32;
-            square.set_color(color_multiplier, color_multiplier, color_multiplier);
-            square.append_translation(&Translation2::new(x, y));
-            x += 1.0;
+            pixel_x += 1;
         }
-        y += 1.0;
+        pixel_y += 1;
     }
+
     window.set_background_color(1.0, 1.0, 1.0);
     window.set_light(Light::StickToCamera);
 
