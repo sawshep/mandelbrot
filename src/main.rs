@@ -3,7 +3,7 @@ extern crate num_complex;
 
 use image::ImageBuffer;
 use num_complex::Complex;
-//use std::thread;
+use std::thread;
 
 const RESOLUTION: u32 = 10000;
 
@@ -35,12 +35,14 @@ fn mandelbrot(real: f32, imag: f32, max_iter: u32) -> f32 {
 fn main() {
     let mut image_buffer = ImageBuffer::new(RESOLUTION, RESOLUTION);
     for (pixel_x, pixel_y, pixel) in image_buffer.enumerate_pixels_mut() {
+        //let child = thread::spawn(|| {
         let x_real = MINIMUM_REAL + (pixel_x as f32) * X_SCALE;
         let y_imag = MINIMUM_IMAGINARY + (pixel_y as f32) * Y_SCALE;
 
         let color_multiplier = mandelbrot(x_real, y_imag, MAXIMUM_ITERATIONS);
         let rgb_value = (255.0 * color_multiplier) as u8;
         *pixel = image::Rgb([rgb_value, rgb_value, rgb_value]);
+        //});
     }
     image_buffer.save("fractal.png").unwrap();
 }
