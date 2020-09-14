@@ -39,7 +39,7 @@ fn main() {
     for (pixel_x, pixel_y, pixel) in image_buffer.enumerate_pixels_mut() {
         //let child = thread::spawn(|| {
         let x_real = MINIMUM_REAL + (pixel_x as f32) * X_SCALE;
-        let y_imag = MINIMUM_IMAGINARY + (pixel_y as f32) * Y_SCALE;
+        let y_imag = -1.0 * (MINIMUM_IMAGINARY + (pixel_y as f32) * Y_SCALE);
 
         let color_multiplier = mandelbrot(x_real, y_imag, MAXIMUM_ITERATIONS);
         let rgb_value = (255.0 * color_multiplier) as u8;
