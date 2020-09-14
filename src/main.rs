@@ -3,6 +3,7 @@ extern crate num_complex;
 
 use image::ImageBuffer;
 use num_complex::Complex;
+use std::io::BufRead::read_line;
 //use std::thread;
 
 const RESOLUTION: u32 = 1000;
@@ -14,7 +15,7 @@ const MAXIMUM_IMAGINARY: f32 = 2.0;
 
 const X_SCALE: f32 = (MAXIMUM_REAL - MINIMUM_REAL) / ((RESOLUTION - 1) as f32);
 const Y_SCALE: f32 = (MAXIMUM_IMAGINARY - MINIMUM_IMAGINARY) / ((RESOLUTION - 1) as f32);
-const MAXIMUM_ITERATIONS: u32 = 50;
+const MAXIMUM_ITERATIONS: u32 = 100;
 const EXPLOSION_THRESHOLD: u32 = 2;
 
 fn mandelbrot(real: f32, imag: f32, max_iter: u32) -> f32 {
@@ -23,16 +24,31 @@ fn mandelbrot(real: f32, imag: f32, max_iter: u32) -> f32 {
 
     let mut i: u32 = 0;
     while i <= max_iter as u32 {
-        z = (z * z) + c;
         if z.norm() > (EXPLOSION_THRESHOLD as f32) {
             return (i as f32) / (max_iter as f32);
         }
+        z = (z * z) + c;
         i += 1;
     }
     return 1.0;
 }
 
 fn main() {
+    let resolution_input = String::new();
+    loop{
+        let resolution: u32 = match read_line(&mut resolution_input).unwrap() {
+            Ok(n) => {
+                match resolution_input.parse::<u32>() {
+                    Ok(n) => n,
+                    Err(_) => println!("Retry"),
+                }
+            }
+            Err(e) => println!("Big error"),
+        }
+    }
+}
+
+
     let mut image_buffer = ImageBuffer::new(RESOLUTION, RESOLUTION);
     println!("Image buffer created");
     println!("Running...");
