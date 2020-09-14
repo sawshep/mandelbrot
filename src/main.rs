@@ -5,12 +5,12 @@ use image::ImageBuffer;
 use num_complex::Complex;
 //use std::thread;
 
-const RESOLUTION: u32 = 50000;
+const RESOLUTION: u32 = 1000;
 
-const MINIMUM_REAL: f32 = -2.05;
-const MAXIMUM_REAL: f32 = 0.55;
-const MINIMUM_IMAGINARY: f32 = -1.3;
-const MAXIMUM_IMAGINARY: f32 = 1.3;
+const MINIMUM_REAL: f32 = -2.0;
+const MAXIMUM_REAL: f32 = 2.0;
+const MINIMUM_IMAGINARY: f32 = -2.0;
+const MAXIMUM_IMAGINARY: f32 = 2.0;
 
 const X_SCALE: f32 = (MAXIMUM_REAL - MINIMUM_REAL) / ((RESOLUTION - 1) as f32);
 const Y_SCALE: f32 = (MAXIMUM_IMAGINARY - MINIMUM_IMAGINARY) / ((RESOLUTION - 1) as f32);
