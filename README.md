@@ -1,3 +1,3 @@
 # mandelbrot
 
-My implementation of the Mandelbrot Set in Rust using kiss3d.
+My implementation of the Mandelbrot Set in Rust.
